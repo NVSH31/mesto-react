@@ -8,26 +8,17 @@ function Main({ onCardClick, onDeleteCardClick, onEditProfile, onAddPlace, onEdi
 
   const [userName ,setUserName] = React.useState('Жак-Ив Кусто');
   const [userDescription ,setUserDescription] = React.useState('Исследователь океана');
-  const [userAvatar ,setUserAvatar] = React.useState(null);
+  const [userAvatar ,setUserAvatar] = React.useState('');
 
-
+  const [cards, setCards] = React.useState([]);
 
   useEffect(() => {
-    api.getMe()
-      .then(profile => {
+    Promise.all([api.getMe(), api.getInitialCards()])
+      .then(([profile, cards]) => {
         setUserName(profile.name);
         setUserDescription(profile.about);
         setUserAvatar(profile.avatar);
         myId = profile._id;
-      })
-      .catch(Error => console.log(Error));
-  }, [userName, userDescription, userAvatar]);
-
-
-  const [cards, setCards] = React.useState([]);
-  useEffect(() => {
-    api.getInitialCards()
-      .then(cards => {
         setCards(cards);
       })
       .catch(Error => console.log(Error));
@@ -52,7 +43,16 @@ function Main({ onCardClick, onDeleteCardClick, onEditProfile, onAddPlace, onEdi
       <section className="elements">
         <ul className="elements__list">
           {cards.map((card, i) => {
-            return <Card key={i} card={card} onCardClick={onCardClick} onDeleteCardClick={onDeleteCardClick} myId={myId}/>
+            return (
+              <li className="elements__item" key={card._id}>
+                <Card
+                  card={card}
+                  onCardClick={onCardClick}
+                  onDeleteCardClick={onDeleteCardClick}
+                  myId={myId}
+                />
+              </li>
+            )
           })}
         </ul>
       </section>
