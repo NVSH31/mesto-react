@@ -3,7 +3,7 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import Main from '../Main/Main';
 import ImagePopup from "../ImagePopup/ImagePopup";
-import PopupWihtForm from '../PopupWithForm/PopupWithForm';
+import PopupWithForm from '../PopupWithForm/PopupWithForm';
 
 
 function App() {
@@ -51,7 +51,7 @@ function App() {
       />
       <Footer />
       <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-      <PopupWihtForm
+      <PopupWithForm
         popup_type={
           (isEditProfilePopupOpen && 'popup_profile') ||
           (isAddPlacePopupOpen && 'popup_card') ||

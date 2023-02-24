@@ -1,6 +1,6 @@
 import React from "react";
 
-function PopupWihtForm({
+function PopupWithForm({
   popup_type, name, title, additional_class, button_text, markup, onClose, isOpen
 }) {
   return (
@@ -17,4 +17,4 @@ function PopupWihtForm({
   );
 }
 
-export default PopupWihtForm;
+export default PopupWithForm;
