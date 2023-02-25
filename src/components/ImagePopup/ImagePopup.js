@@ -3,20 +3,21 @@ import React from "react";
 function ImagePopup({ card, onClose }) {
 
   const handleEscClose = function (evt) {
+    console.log(evt.key);
     if (evt.key === 'Escape') {
       onClose();
     }
   }
 
   React.useEffect(() => {
-    if (document.querySelector('.popup_image').classList.contains('popup_opened')) {
+    if (card !== null) {
       document.addEventListener('keydown', handleEscClose);
 
       return () => {
         document.removeEventListener('keydown', handleEscClose);
       }
     }
-  });
+  }, [card,]);
 
   const handleCloseByOverlay = (evt) => {
     if (evt.target.classList.contains('popup_opened')) {
@@ -27,7 +28,7 @@ function ImagePopup({ card, onClose }) {
   return (
     <section
       className={`popup popup_image ${card ? 'popup_opened' : ''}`}
-      onClick={handleCloseByOverlay} onKeyDown={handleCloseByOverlay}
+      onClick={handleCloseByOverlay}
     >
       <div className="popup__container">
         <button type="button" className="popup__close-icon" onClick={onClose} ></button>

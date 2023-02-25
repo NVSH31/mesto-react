@@ -59,90 +59,81 @@ function App() {
         name={'edit-profile'}
         title={'Редактировать профиль'}
         button_text={'Сохранить'}
-        markup={
-          <>
-            <input
-              id="name-input"
-              name="name-input"
-              className="popup__field popup__field_name"
-              type="text"
-              required
-              minLength="2"
-              maxLength="40"
-            />
-            <span id="name-input-error" className="popup__span"></span>
-            <input
-              id="job-input"
-              name="job-input"
-              className="popup__field popup__field_job"
-              type="text"
-              required
-              minLength="2"
-              maxLength="200"
-            />
-            <span id="job-input-error" className="popup__span"></span>
-          </>
-        }
         onClose={closeAllPopups}
         isOpen={isEditProfilePopupOpen}
-      />
+      >
+        <input
+          id="name-input"
+          name="name-input"
+          className="popup__field popup__field_name"
+          type="text"
+          required
+          minLength="2"
+          maxLength="40"
+        />
+        <span id="name-input-error" className="popup__span"></span>
+        <input
+          id="job-input"
+          name="job-input"
+          className="popup__field popup__field_job"
+          type="text"
+          required
+          minLength="2"
+          maxLength="200"
+        />
+        <span id="job-input-error" className="popup__span"></span>
+      </PopupWithForm>
       <PopupWithForm
         popup_type={'popup_card'}
         name={'add-card'}
         title={'Новое место'}
         additional_class={'popup__submit_disabled'}
         button_text={'Создать'}
-        markup={
-          <>
-            <input
-              id="title-input"
-              name="title-input"
-              className="popup__field popup__field_title"
-              type="text"
-              placeholder='Название'
-              required minLength="2"
-              maxLength="30"
-            />
-            <span id="title-input-error" className="popup__span popup__input-error">
-            </span>
-            <input
-              id="url-input"
-              name="url-input"
-              className="popup__field popup__field_url"
-              type="url"
-              placeholder='Ссылка на картинку'
-              required
-            />
-            <span id="url-input-error" className="popup__span popup__input-error">
-            </span>
-          </>
-        }
         onClose={closeAllPopups}
         isOpen={isAddPlacePopupOpen}
-      />
+      >
+        <input
+          id="title-input"
+          name="title-input"
+          className="popup__field popup__field_title"
+          type="text"
+          placeholder='Название'
+          required minLength="2"
+          maxLength="30"
+        />
+        <span id="title-input-error" className="popup__span popup__input-error">
+        </span>
+        <input
+          id="url-input"
+          name="url-input"
+          className="popup__field popup__field_url"
+          type="url"
+          placeholder='Ссылка на картинку'
+          required
+        />
+        <span id="url-input-error" className="popup__span popup__input-error">
+        </span>
+      </PopupWithForm>
       <PopupWithForm
         popup_type={'popup_avatar'}
         name={'edit-avatar'}
         title={'Обновить аватар'}
         additional_class={'popup__submit_disabled'}
         button_text={'Сохранить'}
-        markup={
-          <>
-            <input
-              id="avatar-url-input"
-              name="avatar-url-input"
-              className="popup__field popup__field_url"
-              type="url"
-              placeholder='Ссылка на картинку'
-              required
-            />
-            <span id="avatar-url-input-error" className="popup__span popup__input-error">
-            </span>
-          </>
-        }
         onClose={closeAllPopups}
         isOpen={isEditAvatarPopupOpen}
-      />
+      >
+        <input
+          id="avatar-url-input"
+          name="avatar-url-input"
+          className="popup__field popup__field_url"
+          type="url"
+          placeholder='Ссылка на картинку'
+          required
+        />
+        <span id="avatar-url-input-error" className="popup__span popup__input-error">
+        </span>
+      </PopupWithForm>
       <PopupWithForm
         popup_type={'popup_delete'}
         name={'delete-card'}
