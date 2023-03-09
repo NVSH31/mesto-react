@@ -10,15 +10,18 @@ export default function EditAvatarPopup({
   const [urlAvatar, setUrlAvatar] = React.useState('');
   const urlAvatarRef = React.useRef('');
 
+  const [inputsValid, setInputsValid] = React.useState(false);
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
 
     onUpdateAvatar({ avatar: urlAvatarRef.current.value });
+    setUrlAvatar('');
   }
 
   const handleChangeAvatar = (evt) => {
     setUrlAvatar(evt.target.value);
+    setInputsValid(urlAvatarRef.current.validity.valid);
   }
 
   return (
@@ -26,15 +29,16 @@ export default function EditAvatarPopup({
       popup_type={'popup_avatar'}
       name={'edit-avatar'}
       title={'Обновить аватар'}
-      // additional_class={'popup__submit_disabled'}
+      additional_class={'popup__submit_disabled'}
       button_text={'Сохранить'}
       onClose={onClose}
       isOpen={isOpen}
       onSubmit={handleSubmit}
+      inputsValid={inputsValid}
     >
       <input
         id="avatar-url-input"
-        name="avatar-url-input"
+        name="url"
         className="popup__field popup__field_url"
         type="url"
         placeholder='Ссылка на картинку'
@@ -44,6 +48,7 @@ export default function EditAvatarPopup({
         ref={urlAvatarRef}
       />
       <span id="avatar-url-input-error" className="popup__span popup__input-error">
+        {urlAvatarRef.current.validationMessage}
       </span>
     </PopupWithForm>
   );

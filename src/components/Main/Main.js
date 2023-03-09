@@ -7,7 +7,6 @@ function Main({
     cards,
     onCardLike,
     onCardClick,
-    // onDeleteCardClick,
     onCardDelete,
     onEditProfile,
     onAddPlace,
@@ -15,35 +14,6 @@ function Main({
   }) {
 
   const currentUser = React.useContext(CurrentUserContext);
-  // console.log(currentUser);
-
-  // myId = currentUser._id;
-
-  // const [userName ,setUserName] = React.useState('Жак-Ив Кусто');
-  // const [userDescription ,setUserDescription] = React.useState('Исследователь океана');
-  // const [userAvatar ,setUserAvatar] = React.useState('');
-
-  // const [cards, setCards] = React.useState([]);
-
-  // useEffect(() => {
-  //   Promise.all([api.getMe(), api.getInitialCards()])
-  //     .then(([profile, cards]) => {
-  //       setUserName(profile.name);
-  //       setUserDescription(profile.about);
-  //       setUserAvatar(profile.avatar);
-  //       myId = profile._id;
-  //       setCards(cards);
-  //     })
-  //     .catch(Error => console.log(Error));
-  // }, []);
-
-  // React.useEffect(() => {
-  //   api.getInitialCards()
-  //     .then((cards) => {
-  //       setCards(cards);
-  //     })
-  //     .catch(Error => console.log(Error));
-  // }, []);
 
   return (
     <main>

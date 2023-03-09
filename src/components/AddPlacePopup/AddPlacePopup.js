@@ -1,27 +1,86 @@
 import React from "react";
 import PopupWithForm from "../PopupWithForm/PopupWithForm";
+import { validUrl } from "../../utils/validators";
+
 
 export default function AddPlacePopup({
   onClose, isOpen, onAddPlace
 }) {
 
-  const [name, setName] = React.useState('');
-  const [link, setLink] = React.useState('');
+  const [inputsValid, setInputsValid] = React.useState(false);
 
-  const handleChangeName = (evt) => {
-    setName(evt.target.value);
-  };
+  const validators = {
+    titleInput: {
+      required: (value) => { return value === ''; },
+      minLength: (value) => { return (value !== undefined ? value.length < 2 : true); },
+      maxLength: (value) => { return (value !== undefined ? value.length > 30 : true); },
+    },
+    linkInput: {
+      required: (value) => { return value === ''; },
+      typeUrl: (value) => { return (validUrl(value)); }
+    }
+  }
 
-  const handleChangeLink = (evt) => {
-    setLink(evt.target.value);
-  };
+  const [errors, setErrors] = React.useState({
+    titleInput: {
+      required: false,
+      minLength: false,
+      maxLength: false,
+    },
+    linkInput: {
+      required: false,
+      typeUrl: false,
+    }
+  });
+
+  const [inputValues, setInputValues] = React.useState({
+    title: '',
+    link: '',
+  });
+
+  const handleChangeInputs = (evt) => {
+    const { name, value } = evt.target;
+    setInputValues(prevState => ({...prevState, [name]: value}));
+  }
+
+  React.useEffect(function validateInputs() {
+
+    const inputTitleValid = Object.keys(validators.titleInput).map(errorKey => {
+      const errorResult = validators.titleInput[errorKey](inputValues.title);
+
+      return { [errorKey]: errorResult }
+    }).reduce((acc, el) => ({...acc, ...el}), {});
+
+    const inputLinkValid = Object.keys(validators.linkInput).map(errorKey => {
+      const errorResult = validators.linkInput[errorKey](inputValues.link);
+
+      return { [errorKey]: errorResult }
+    }).reduce((acc, el) => ({...acc, ...el}), {});
+
+    setInputsValid(
+      !(Object.values(inputTitleValid).some(value => value === true))
+      && !(Object.values(inputLinkValid).some(value => value === true))
+    );
+
+    setErrors({
+      titleInput: inputTitleValid,
+      linkInput: inputLinkValid,
+    });
+
+  }, [inputValues, setErrors]);
+
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
 
     onAddPlace({
-      name: name,
-      link: link
+      name: inputValues.title,
+      link: inputValues.link
+    });
+
+    setInputValues({
+      title: '',
+      link: '',
     });
   }
 
@@ -30,36 +89,39 @@ export default function AddPlacePopup({
           popup_type={'popup_card'}
           name={'add-card'}
           title={'Новое место'}
-          // additional_class={'popup__submit_disabled'}
+          additional_class={'popup__submit_disabled'}
           button_text={'Создать'}
           onClose={onClose}
           isOpen={isOpen}
           onSubmit={handleSubmit}
+          inputsValid={inputsValid}
         >
           <input
             id="title-input"
-            name="title-input"
+            name="title"
             className="popup__field popup__field_title"
             type="text"
             placeholder='Название'
-            required minLength="2"
-            maxLength="30"
-            onChange={handleChangeName}
-            value={name}
+            onChange={handleChangeInputs}
+            value={inputValues.title}
           />
           <span id="title-input-error" className="popup__span popup__input-error">
+            { errors.titleInput.required && 'Вы пропустили это поле. ' }
+            { errors.titleInput.minLength && 'Должно быти не менее 2 символов. ' }
+            { errors.titleInput.maxLength && 'Должно быти не более 30 символов. ' }
           </span>
           <input
             id="url-input"
-            name="url-input"
+            name="link"
             className="popup__field popup__field_url"
             type="url"
             placeholder='Ссылка на картинку'
-            required
-            onChange={handleChangeLink}
-            value={link}
+            onChange={handleChangeInputs}
+            value={inputValues.link}
           />
           <span id="url-input-error" className="popup__span popup__input-error">
+            { errors.linkInput.required && 'Вы пропустили это поле. ' }
+            { errors.linkInput.typeUrl && 'Должна быть ссылка. ' }
           </span>
         </PopupWithForm>
   );

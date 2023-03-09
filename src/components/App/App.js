@@ -3,11 +3,11 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import Main from '../Main/Main';
 import ImagePopup from "../ImagePopup/ImagePopup";
-import PopupWithForm from '../PopupWithForm/PopupWithForm';
 import EditProfilePopup from '../EditProfilePopup/EditProfilePopup';
 import EditAvatarPopup from '../EditAvatarPopup/EditAvatarPopup';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import AddPlacePopup from '../AddPlacePopup/AddPlacePopup';
+import DeletePlacePopup from '../DeletePlacePopup/DeletePlacePopup';
 import api from '../../utils/api';
 
 
@@ -31,6 +31,7 @@ function App() {
   const [isDeleteCardPopupOpen, setIsDeleteCardPopupOpen] = React.useState(false);
 
   const [selectedCard, setSelectedCard] = React.useState(null);
+  const [deletedCard, setDeletedCard] = React.useState(null);
 
   const handleCardLike = (card) => {
     const isLiked = card.likes.some((like) => like._id === currentUser._id);
@@ -50,12 +51,9 @@ function App() {
     }
   }
 
-  const handleCardDelete = (card) => {
-    api.deleteCard(card._id)
-      .then(() => {
-        setCards((state) => state.filter((c) => c._id !== card._id));
-      })
-      .catch(Error => console.log(Error));
+  const handleCardDelete = (deletedCard) => {
+    setDeletedCard(deletedCard);
+    setIsDeleteCardPopupOpen(true);
   }
 
   const handleCardClick = (selectedCard) => {
@@ -99,14 +97,19 @@ function App() {
       .catch(Error => console.log(Error));
   }
 
+  const handleDeletePlaceSubmit = (card) => {
+    api.deleteCard(card._id)
+      .then(() => {
+        setCards((state) => state.filter((c) => c._id !== card._id));
+        closeAllPopups();
+      })
+      .catch(Error => console.log(Error));
+  }
 
-
-  // const handleDeleteCardClick = (card) => {
-  //   setIsDeleteCardPopupOpen(true);
-  // }
 
   const closeAllPopups = () => {
     setSelectedCard(null);
+    setDeletedCard(null);
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
@@ -122,7 +125,6 @@ function App() {
           onCardLike={handleCardLike}
           onCardClick={handleCardClick}
           onCardDelete={handleCardDelete}
-          // onDeleteCardClick={handleDeleteCardClick}
           onEditProfile={handleEditProfileClick}
           onAddPlace={handleAddPlaceClick}
           onEditAvatar={handleEditAvatarClick}
@@ -147,14 +149,11 @@ function App() {
           onClose={closeAllPopups}
           onUpdateAvatar={handleUpdateAvatar}
         />
-        <PopupWithForm
-          popup_type={'popup_delete'}
-          name={'delete-card'}
-          title={'Вы уверены?'}
-          additional_class={'popup__submit_delete'}
-          button_text={'Да'}
-          onClose={closeAllPopups}
+        <DeletePlacePopup
           isOpen={isDeleteCardPopupOpen}
+          onClose={closeAllPopups}
+          onDeletePlace={handleDeletePlaceSubmit}
+          card={deletedCard}
         />
       </div>
     </CurrentUserContext.Provider>
