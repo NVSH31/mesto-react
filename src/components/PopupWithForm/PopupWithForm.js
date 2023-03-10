@@ -1,25 +1,29 @@
 import React from "react";
 
 function PopupWithForm({
-  popup_type,
+  popupType,
   name,
   title,
-  additional_class,
-  button_text,
+  additionalClass,
+  buttonText,
+  buttonLoadingText,
   onClose,
   isOpen,
   children,
   onSubmit,
-  inputsValid
+  inputsValid,
+  isLoading
 }) {
   return (
-    <section className={`popup ${popup_type} ${isOpen && 'popup_opened'}`}>
+    <section className={`popup ${popupType} ${isOpen && 'popup_opened'}`}>
       <div className="popup__container">
-        <button type="button" className="popup__close-icon" onClick={onClose}></button>
+        <button type="button" className="popup__close-icon" onClick={onClose} />
         <form className="popup__form" name={name} onSubmit={onSubmit} noValidate>
           <h2 className="popup__title">{title}</h2>
           {children}
-          <button type="submit" className={`popup__submit ${!inputsValid && additional_class}`}>{button_text}</button>
+          <button type="submit" className={`popup__submit ${!inputsValid && additionalClass}`}>
+            { isLoading ? buttonLoadingText : buttonText }
+          </button>
         </form>
       </div>
     </section>

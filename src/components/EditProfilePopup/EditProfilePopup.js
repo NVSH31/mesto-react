@@ -4,7 +4,7 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
 
 export default function EditProfilePopup({
-  isOpen, onClose, onUpdateUser
+  isOpen, onClose, onUpdateUser, isLoading
 }) {
 
   const [inputsValid, setInputsValid] = React.useState(false);
@@ -52,7 +52,7 @@ export default function EditProfilePopup({
       name: currentUser.name,
       description: currentUser.about,
     });
-  }, [currentUser]);
+  }, [currentUser, isOpen]);
 
   React.useEffect(function validateInputs() {
 
@@ -90,15 +90,17 @@ export default function EditProfilePopup({
 
   return (
     <PopupWithForm
-      popup_type={'popup_profile'}
+      popupType={'popup_profile'}
       name={'edit-profile'}
       title={'Редактировать профиль'}
-      additional_class={'popup__submit_disabled'}
-      button_text={'Сохранить'}
+      additionalClass={'popup__submit_disabled'}
+      buttonText={'Сохранить'}
+      buttonLoadingText={'Сохранение...'}
       onClose={onClose}
       isOpen={isOpen}
       onSubmit={handleSubmit}
       inputsValid={inputsValid}
+      isLoading={isLoading}
     >
       <input
         id="name-input"
@@ -106,7 +108,7 @@ export default function EditProfilePopup({
         className="popup__field popup__field_name"
         type="text"
         onChange={handleChangeInputs}
-        value={inputValues.name}
+        value={inputValues.name || ''}
       />
       <span id="name-input-error" className="popup__span popup__input-error">
         { errors.nameInput.required && 'Вы пропустили это поле. ' }
@@ -119,7 +121,7 @@ export default function EditProfilePopup({
         className="popup__field popup__field_job"
         type="text"
         onChange={handleChangeInputs}
-        value={inputValues.description}
+        value={inputValues.description || ''}
       />
       <span id="job-input-error" className="popup__span popup__input-error">
         { errors.jobInput.required && 'Вы пропустили это поле. ' }

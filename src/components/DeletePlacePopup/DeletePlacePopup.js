@@ -5,7 +5,8 @@ export default function DeletePlacePopup({
   isOpen,
   onClose,
   onDeletePlace,
-  card
+  card,
+  isLoading
 }) {
 
   const handleSubmit = (evt) => {
@@ -16,14 +17,16 @@ export default function DeletePlacePopup({
 
   return (
     <PopupWithForm
-      popup_type={'popup_delete'}
+      popupType={'popup_delete'}
       name={'delete-card'}
       title={'Вы уверены?'}
-      additional_class={'popup__submit_delete'}
-      button_text={'Да'}
+      additionalClass={'popup__submit_delete'}
+      buttonText={'Да'}
+      buttonLoadingText={'Удаление...'}
       onClose={onClose}
       isOpen={isOpen}
       onSubmit={handleSubmit}
+      isLoading={isLoading}
     />
   );
 }

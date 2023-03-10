@@ -4,7 +4,7 @@ import { validUrl } from "../../utils/validators";
 
 
 export default function AddPlacePopup({
-  onClose, isOpen, onAddPlace
+  onClose, isOpen, onAddPlace, isLoading
 }) {
 
   const [inputsValid, setInputsValid] = React.useState(false);
@@ -67,7 +67,7 @@ export default function AddPlacePopup({
       linkInput: inputLinkValid,
     });
 
-  }, [inputValues, setErrors]);
+  }, [inputValues]);
 
 
   const handleSubmit = (evt) => {
@@ -78,23 +78,40 @@ export default function AddPlacePopup({
       link: inputValues.link
     });
 
+  }
+
+  React.useEffect(() => {
     setInputValues({
       title: '',
       link: '',
     });
-  }
+
+    setErrors({ // not work
+      titleInput: {
+        required: false,
+        minLength: false,
+        maxLength: false,
+      },
+      linkInput: {
+        required: false,
+        typeUrl: false,
+      }
+    });
+  }, [isOpen]);
 
   return (
     <PopupWithForm
-          popup_type={'popup_card'}
+          popupType={'popup_card'}
           name={'add-card'}
           title={'Новое место'}
-          additional_class={'popup__submit_disabled'}
-          button_text={'Создать'}
+          additionalClass={'popup__submit_disabled'}
+          buttonText={'Создать'}
+          buttonLoadingText={'Создание...'}
           onClose={onClose}
           isOpen={isOpen}
           onSubmit={handleSubmit}
           inputsValid={inputsValid}
+          isLoading={isLoading}
         >
           <input
             id="title-input"
@@ -103,7 +120,7 @@ export default function AddPlacePopup({
             type="text"
             placeholder='Название'
             onChange={handleChangeInputs}
-            value={inputValues.title}
+            value={inputValues.title || ''}
           />
           <span id="title-input-error" className="popup__span popup__input-error">
             { errors.titleInput.required && 'Вы пропустили это поле. ' }
@@ -117,7 +134,7 @@ export default function AddPlacePopup({
             type="url"
             placeholder='Ссылка на картинку'
             onChange={handleChangeInputs}
-            value={inputValues.link}
+            value={inputValues.link || ''}
           />
           <span id="url-input-error" className="popup__span popup__input-error">
             { errors.linkInput.required && 'Вы пропустили это поле. ' }

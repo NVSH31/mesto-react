@@ -5,36 +5,40 @@ export default function EditAvatarPopup({
   onClose,
   isOpen,
   onUpdateAvatar,
+  isLoading,
 }) {
 
-  const [urlAvatar, setUrlAvatar] = React.useState('');
   const urlAvatarRef = React.useRef('');
 
   const [inputsValid, setInputsValid] = React.useState(false);
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-
     onUpdateAvatar({ avatar: urlAvatarRef.current.value });
-    setUrlAvatar('');
   }
 
+  React.useEffect(() => {
+    urlAvatarRef.current.value = '';
+    setInputsValid(false);
+  }, [isOpen]);
+
   const handleChangeAvatar = (evt) => {
-    setUrlAvatar(evt.target.value);
     setInputsValid(urlAvatarRef.current.validity.valid);
   }
 
   return (
     <PopupWithForm
-      popup_type={'popup_avatar'}
+      popupType={'popup_avatar'}
       name={'edit-avatar'}
       title={'Обновить аватар'}
-      additional_class={'popup__submit_disabled'}
-      button_text={'Сохранить'}
+      additionalClass={'popup__submit_disabled'}
+      buttonText={'Сохранить'}
+      buttonLoadingText={'Сохранение...'}
       onClose={onClose}
       isOpen={isOpen}
       onSubmit={handleSubmit}
       inputsValid={inputsValid}
+      isLoading={isLoading}
     >
       <input
         id="avatar-url-input"
@@ -44,7 +48,6 @@ export default function EditAvatarPopup({
         placeholder='Ссылка на картинку'
         required
         onChange={handleChangeAvatar}
-        value={urlAvatar}
         ref={urlAvatarRef}
       />
       <span id="avatar-url-input-error" className="popup__span popup__input-error">
