@@ -40,22 +40,22 @@ export default function AddPlacePopup({
 
   const handleChangeInputs = (evt) => {
     const { name, value } = evt.target;
-    setInputValues(prevState => ({...prevState, [name]: value}));
+    setInputValues(prevState => ({ ...prevState, [name]: value }));
   }
 
-  React.useEffect(function validateInputs() {
+  React.useEffect(() => {
 
     const inputTitleValid = Object.keys(validators.titleInput).map(errorKey => {
       const errorResult = validators.titleInput[errorKey](inputValues.title);
 
       return { [errorKey]: errorResult }
-    }).reduce((acc, el) => ({...acc, ...el}), {});
+    }).reduce((acc, el) => ({ ...acc, ...el }), {});
 
     const inputLinkValid = Object.keys(validators.linkInput).map(errorKey => {
       const errorResult = validators.linkInput[errorKey](inputValues.link);
 
       return { [errorKey]: errorResult }
-    }).reduce((acc, el) => ({...acc, ...el}), {});
+    }).reduce((acc, el) => ({ ...acc, ...el }), {});
 
     setInputsValid(
       !(Object.values(inputTitleValid).some(value => value === true))
@@ -77,7 +77,6 @@ export default function AddPlacePopup({
       name: inputValues.title,
       link: inputValues.link
     });
-
   }
 
   React.useEffect(() => {
@@ -86,60 +85,65 @@ export default function AddPlacePopup({
       link: '',
     });
 
-    setErrors({ // not work
+    setErrors({
+      ...errors,
       titleInput: {
+        ...errors.titleInput,
         required: false,
         minLength: false,
         maxLength: false,
       },
       linkInput: {
+        ...errors.linkInput,
         required: false,
         typeUrl: false,
       }
     });
+
   }, [isOpen]);
+
 
   return (
     <PopupWithForm
-          popupType={'popup_card'}
-          name={'add-card'}
-          title={'Новое место'}
-          additionalClass={'popup__submit_disabled'}
-          buttonText={'Создать'}
-          buttonLoadingText={'Создание...'}
-          onClose={onClose}
-          isOpen={isOpen}
-          onSubmit={handleSubmit}
-          inputsValid={inputsValid}
-          isLoading={isLoading}
-        >
-          <input
-            id="title-input"
-            name="title"
-            className="popup__field popup__field_title"
-            type="text"
-            placeholder='Название'
-            onChange={handleChangeInputs}
-            value={inputValues.title || ''}
-          />
-          <span id="title-input-error" className="popup__span popup__input-error">
-            { errors.titleInput.required && 'Вы пропустили это поле. ' }
-            { errors.titleInput.minLength && 'Должно быти не менее 2 символов. ' }
-            { errors.titleInput.maxLength && 'Должно быти не более 30 символов. ' }
-          </span>
-          <input
-            id="url-input"
-            name="link"
-            className="popup__field popup__field_url"
-            type="url"
-            placeholder='Ссылка на картинку'
-            onChange={handleChangeInputs}
-            value={inputValues.link || ''}
-          />
-          <span id="url-input-error" className="popup__span popup__input-error">
-            { errors.linkInput.required && 'Вы пропустили это поле. ' }
-            { errors.linkInput.typeUrl && 'Должна быть ссылка. ' }
-          </span>
-        </PopupWithForm>
+      popupType={'popup_card'}
+      name={'add-card'}
+      title={'Новое место'}
+      additionalClass={'popup__submit_disabled'}
+      buttonText={'Создать'}
+      buttonLoadingText={'Создание...'}
+      onClose={onClose}
+      isOpen={isOpen}
+      onSubmit={handleSubmit}
+      inputsValid={inputsValid}
+      isLoading={isLoading}
+    >
+      <input
+        id="title-input"
+        name="title"
+        className="popup__field popup__field_title"
+        type="text"
+        placeholder='Название'
+        onChange={handleChangeInputs}
+        value={inputValues.title || ''}
+      />
+      <span id="title-input-error" className="popup__span popup__input-error">
+        {errors.titleInput.required && 'Вы пропустили это поле. '}
+        {errors.titleInput.minLength && 'Должно быти не менее 2 символов. '}
+        {errors.titleInput.maxLength && 'Должно быти не более 30 символов. '}
+      </span>
+      <input
+        id="url-input"
+        name="link"
+        className="popup__field popup__field_url"
+        type="url"
+        placeholder='Ссылка на картинку'
+        onChange={handleChangeInputs}
+        value={inputValues.link || ''}
+      />
+      <span id="url-input-error" className="popup__span popup__input-error">
+        {errors.linkInput.required && 'Вы пропустили это поле. '}
+        {errors.linkInput.typeUrl && 'Должна быть ссылка. '}
+      </span>
+    </PopupWithForm>
   );
 }

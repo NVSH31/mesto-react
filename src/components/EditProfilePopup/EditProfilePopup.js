@@ -54,7 +54,7 @@ export default function EditProfilePopup({
     });
   }, [currentUser, isOpen]);
 
-  React.useEffect(function validateInputs() {
+  React.useEffect(() => {
 
     const inputNameValid = Object.keys(validators.nameInput).map(errorKey => {
       const errorResult = validators.nameInput[errorKey](inputValues.name);
@@ -69,7 +69,8 @@ export default function EditProfilePopup({
     }).reduce((acc, el) => ({...acc, ...el}), {});
 
     setInputsValid(
-      !(Object.values(inputNameValid).some(value => value === true)) && !(Object.values(inputJobValid).some(value => value === true))
+      !(Object.values(inputNameValid).some(value => value === true)) &&
+      !(Object.values(inputJobValid).some(value => value === true))
     );
 
     setErrors({

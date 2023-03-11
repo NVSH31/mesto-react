@@ -73,22 +73,14 @@ function App() {
   }
 
   const handleUpdateUser = (inputData) => {
-
-    console.log('Before true isLoading = ', isLoading);
-    setIsLoading(true); // not work
-    console.log('After true isLoading = ', isLoading);
-
+    setIsLoading(true);
     api.editMe(inputData.name, inputData.about)
       .then((userData) => {
         setCurrentUser(userData);
         closeAllPopups();
       })
       .catch(Error => console.log(Error))
-      .finally(
-        setIsLoading(false)
-      );
-
-      console.log('after false isLoading = ', isLoading);
+      .finally(() => setIsLoading(false));
   }
 
   const handleUpdateAvatar = (inputData) => {
@@ -99,9 +91,7 @@ function App() {
         closeAllPopups();
       })
       .catch(Error => console.log(Error))
-      .finally(
-        setIsLoading(false)
-      );
+      .finally(() => setIsLoading(false));
   }
 
   const handleAddPlaceSubmit = (inputData) => {
@@ -112,9 +102,11 @@ function App() {
         closeAllPopups();
       })
       .catch(Error => console.log(Error))
-      .finally(
-        setIsLoading(false)
-      );
+      .finally(() => setIsLoading(false));
+  }
+
+  const handleOffLoading = () => {
+    setIsLoading(false);
   }
 
   const handleDeletePlaceSubmit = (card) => {
@@ -125,9 +117,7 @@ function App() {
         closeAllPopups();
       })
       .catch(Error => console.log(Error))
-      .finally(
-        setIsLoading(false)
-      );
+      .finally(handleOffLoading);
   }
 
   const closeAllPopups = () => {
