@@ -62,10 +62,28 @@ export default function AddPlacePopup({
       && !(Object.values(inputLinkValid).some(value => value === true))
     );
 
-    setErrors({
-      titleInput: inputTitleValid,
-      linkInput: inputLinkValid,
-    });
+    if (!inputValues.title && !inputValues.link) {
+      setErrors({
+        ...errors,
+        titleInput: {
+          ...errors.titleInput,
+          required: false,
+          minLength: false,
+          maxLength: false,
+        },
+        linkInput: {
+          ...errors.linkInput,
+          required: false,
+          typeUrl: false,
+        }
+      });
+
+    } else {
+      setErrors({
+        titleInput: inputTitleValid,
+        linkInput: inputLinkValid,
+      });
+    }
 
   }, [inputValues]);
 
@@ -85,23 +103,7 @@ export default function AddPlacePopup({
       link: '',
     });
 
-    setErrors({
-      ...errors,
-      titleInput: {
-        ...errors.titleInput,
-        required: false,
-        minLength: false,
-        maxLength: false,
-      },
-      linkInput: {
-        ...errors.linkInput,
-        required: false,
-        typeUrl: false,
-      }
-    });
-
   }, [isOpen]);
-
 
   return (
     <PopupWithForm

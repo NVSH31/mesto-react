@@ -7,6 +7,7 @@ export default function EditAvatarPopup({
   onUpdateAvatar,
   isLoading,
 }) {
+  const [emptyInput, setEmptyInput] = React.useState(true);
 
   const urlAvatarRef = React.useRef('');
 
@@ -24,6 +25,11 @@ export default function EditAvatarPopup({
 
   const handleChangeAvatar = (evt) => {
     setInputsValid(urlAvatarRef.current.validity.valid);
+    if (urlAvatarRef.current.value) {
+      setEmptyInput(false);
+    } else {
+      setEmptyInput(true);
+    }
   }
 
   return (
@@ -51,7 +57,7 @@ export default function EditAvatarPopup({
         ref={urlAvatarRef}
       />
       <span id="avatar-url-input-error" className="popup__span popup__input-error">
-        {urlAvatarRef.current.validationMessage}
+        {!emptyInput && urlAvatarRef.current.validationMessage}
       </span>
     </PopupWithForm>
   );
